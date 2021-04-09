@@ -19,18 +19,26 @@ router.get('/:id', validateProjectId, (req, res, next) => {
 
 router.post('/', validateProject, (req, res, next) => {
     Project.insert(req.body)
-    .then(dasIT => {
-        console.log('dasIT', dasIT)
-        res.status(201).json(dasIT)
+    .then(dasDaNewProject => {
+        res.status(201).json(dasDaNewProject);
     })
     .catch(next);
 });
 
-router.put('/:id', (req, res, next) => {
-
+router.put('/:id', validateProject, validateProjectId, (req, res, next) => {
+    Project.update(req.params.id, req.body)
+    .then(dasIt => {
+        res.status(201).json(dasIt);
+    })
+    .catch(next);
 });
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', validateProjectId, (req, res, next) => {
+    Project.remove(req.params.id)
+    .then(numberOfDeletedProjects => {
+        res.status(204).json(numberOfDeletedProjects);
+    })
+    .catch(next);
 
 });
 
