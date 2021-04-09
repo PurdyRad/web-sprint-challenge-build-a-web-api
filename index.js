@@ -1,4 +1,4 @@
-/*
+/* LEAVING THESE COMMENTS BECAUSE THEY ARE GOLD
 play this: https://www.youtube.com/watch?v=d-diB65scQU
 
 Sing along:
@@ -12,3 +12,9 @@ I need this code, but don't know where, perhaps should make some middleware, don
 
 Go code!
 */
+
+const server = require('./api/server');
+
+server.listen(4444, () => {
+    console.log('Supreme Port of the United States live on 4444')
+});
