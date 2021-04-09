@@ -2,7 +2,9 @@ const express = require('express');
 const Project = require('./projects-model');
 const { validateProjectId, validateProject } = require('../middleware/middleware');
 
+
 const router = express.Router();
+
 
 router.get('/', (req, res, next) => {
     Project.get()
@@ -19,10 +21,8 @@ router.get('/:id', validateProjectId, (req, res) => {
 
 
 router.get('/:id/actions', validateProjectId, (req, res, next) => {
-    // res.status(200).json(req.project);
     Project.getProjectActions(req.params.id)
     .then(projectsActions => {
-        console.log('projectsActions', projectsActions);
         res.status(200).json(projectsActions);
     })
     .catch(next);

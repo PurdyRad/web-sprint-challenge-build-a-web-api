@@ -2,7 +2,6 @@ const Action = require('../actions/actions-model');
 const Project = require('../projects/projects-model');
 
 
-
 const validateActionId = async (req, res, next) => {
     const {id} = req.params;
     try {
@@ -18,6 +17,7 @@ const validateActionId = async (req, res, next) => {
     }
 };
 
+
 const validateAction = (req, res, next) => {
     const {project_id, description, notes} = req.body;
     if(!project_id || !description || !notes){
@@ -29,6 +29,7 @@ const validateAction = (req, res, next) => {
         next();
     }
 };
+
 
 const validateProjectId = async (req, res, next) => {
     const {id} = req.params;
@@ -45,6 +46,7 @@ const validateProjectId = async (req, res, next) => {
     }
 };
 
+
 const validateProject = (req, res, next) =>{
     const {name, description} = req.body;
     if(!name || !description){
@@ -55,7 +57,6 @@ const validateProject = (req, res, next) =>{
         next();
     }
 };
-
 
 
 module.exports = {

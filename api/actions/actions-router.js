@@ -3,7 +3,9 @@ const express = require('express');
 const Action = require('./actions-model');
 const { validateActionId, validateAction } = require('../middleware/middleware');
 
+
 const router = express.Router();
+
 
 router.get('/', (req, res, next) => {
     Action.get()
@@ -15,15 +17,14 @@ router.get('/', (req, res, next) => {
 
 
 router.get('/:id', validateActionId, (req, res) => {
-    res.status(200).json(req.action)
+    res.status(200).json(req.action);
 });
 
 
 router.post('/', validateAction, (req, res, next) => {
     Action.insert(req.body)
-        .then(rest => {
-        console.log('rest:', rest);
-        res.status(201).json(rest);
+        .then(newAction => {
+        res.status(201).json(newAction);
     })
     .catch(next);
 });
@@ -32,7 +33,6 @@ router.post('/', validateAction, (req, res, next) => {
 router.put('/:id', validateAction, validateActionId, (req,res, next) => {
     Action.update(req.params.id, req.body)
     .then(updatedAction => {
-        console.log('updatedAction', updatedAction);
         res.status(201).json(updatedAction);
     })
     .catch(next);
@@ -41,9 +41,8 @@ router.put('/:id', validateAction, validateActionId, (req,res, next) => {
 
 router.delete('/:id', validateActionId, (req, res, next) => {
     Action.remove(req.params.id)
-    .then(wert => {
-        console.log('wert:', wert)
-        res.status(201).json(wert)
+    .then(numberOfDeletedActions => {
+        res.status(201).json(numberOfDeletedActions);
     })
     .catch(next);
 });
@@ -57,4 +56,5 @@ router.use ((err, req,res,next) => { // eslint-disable-line
     }); 
   });
   
+
 module.exports = router;
