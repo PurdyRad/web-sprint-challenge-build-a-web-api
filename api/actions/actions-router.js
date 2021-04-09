@@ -1,48 +1,60 @@
 // Write your "actions" router here!
 const express = require('express');
 const Action = require('./actions-model');
-const { validateActionId } = require('../middleware/middleware');
+const { validateActionId, validateAction } = require('../middleware/middleware');
 
 const router = express.Router();
 
-router.get('/', (req,res,next) => {
-    Action.get(req)
+router.get('/', (req, res, next) => {
+    Action.get()
     .then((actions) => {
-        console.log('actions', actions)
-        res.status(200).json(actions)
+        res.status(200).json(actions);
     })
-    .catch(next)
+    .catch(next);
 });
 
 
-router.get('/:id', validateActionId, (req,res) => {
+router.get('/:id', validateActionId, (req, res) => {
     res.status(200).json(req.action)
-    console.log('action', req.action)
 });
 
 
-router.post('/', (req,res) => {
-    console.log('post')
+router.post('/', validateAction, (req, res, next) => {
+    Action.insert(req.body)
+        .then(rest => {
+        console.log('rest:', rest);
+        res.status(201).json(rest);
+    })
+    .catch(next);
 });
 
 
-router.put('/:id', (req,res) => {
-    console.log('put')
+router.put('/:id', validateAction, validateActionId, (req,res, next) => {
+    Action.update(req.params.id, req.body)
+    .then(updatedAction => {
+        console.log('updatedAction', updatedAction);
+        res.status(201).json(updatedAction);
+    })
+    .catch(next);
 });
 
 
-router.delete('/:id', (req,res) => {
-    console.log('delete')
+router.delete('/:id', validateActionId, (req, res, next) => {
+    Action.remove(req.params.id)
+    .then(wert => {
+        console.log('wert:', wert)
+        res.status(201).json(wert)
+    })
+    .catch(next);
 });
 
 
 router.use ((err, req,res,next) => { // eslint-disable-line
-    res.status(err.message || 500).json({
+    res.status(err.status || 500).json({
       message: err.message,
       stack: err.stack,
-      custom: "Ya won't find what you're lookin for here."
-    })
-    
-  })
+      customMessage: "Ya won't find what you're lookin for here."
+    }); 
+  });
   
 module.exports = router;
